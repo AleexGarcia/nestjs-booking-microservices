@@ -5,7 +5,7 @@ import { AUTH_SERVICE } from "../constants/services";
 import { UserDto } from "../dto";
 
 @Injectable()
-export class jwtAuthGuard implements CanActivate{
+export class JwtAuthGuard implements CanActivate{
 
     constructor(@Inject(AUTH_SERVICE) private readonly authClient: ClientProxy){}
 
