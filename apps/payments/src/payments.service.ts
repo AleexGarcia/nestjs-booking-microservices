@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import Stripe from 'stripe';
-import { CreateChargeDto } from './dto/create-charge';
+import { CreateChargeDto } from '../../../libs/common/src/dto/create-charge';
 
 @Injectable()
 export class PaymentsService {
   private readonly stripe: Stripe;
   
   constructor(private readonly configService: ConfigService) { 
-    this.stripe = new Stripe(this.configService.getOrThrow<string>('STRIPE_API_KEY'),{
+    this.stripe = new Stripe(this.configService.getOrThrow<string>('STRIPE_SECRET_KEY'),{
       apiVersion: '2026-07-29.dahlia'
     });
   }
 
   async createCharge({ card, amount }: CreateChargeDto): Promise<Stripe.PaymentIntent> {
+    //just for testing purposes, in a real application we recieve the paymentmethodID from front-end.
     const paymentMethod = await this.stripe.paymentMethods.create(
       {
         type: 'card',
-        card,
+        card: {token: 'tok_visa'},
       },
     );
 

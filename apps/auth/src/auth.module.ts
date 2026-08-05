@@ -6,7 +6,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Joi from 'joi';
 import { LocalStrategy } from './strategies/local.strategy';
-import { UsersService } from './users/users.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
@@ -19,7 +18,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         JWT_EXPIRATION: Joi.string().required(),
         TCP_PORT: Joi.number().required(),
         HTTP_PORT: Joi.number().required(),
-      })
+      }),envFilePath: 'apps/auth/.env'
     }),
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
