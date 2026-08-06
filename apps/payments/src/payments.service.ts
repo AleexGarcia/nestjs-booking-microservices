@@ -38,7 +38,7 @@ export class PaymentsService {
 
     this.notificationsClient.emit('sendNotification', {
       email: createPaymentDto.email,
-      message: 'A new payment has been processed.'
+      message: `Your payment of ${paymentIntent.amount / 100} USD has been processed.`,
     });
 
 

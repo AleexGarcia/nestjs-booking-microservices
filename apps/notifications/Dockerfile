@@ -21,7 +21,7 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY package-lock.json ./
 
-run npm install --prod 
+RUN npm install --prod 
 
 COPY  --from=development /usr/src/app/dist ./dist
 
