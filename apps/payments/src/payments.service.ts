@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import Stripe from 'stripe';
-import { CreateChargeDto } from '../../../libs/common/src/dto/create-charge';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 
@@ -12,21 +11,24 @@ export class PaymentsService {
   constructor(
     private readonly configService: ConfigService,
     @Inject('NOTIFICATIONS_SERVICE')
-    private readonly notificationsClient: ClientProxy
+    private readonly notificationsClient: ClientProxy,
   ) {
-    this.stripe = new Stripe(this.configService.getOrThrow<string>('STRIPE_SECRET_KEY'), {
-      apiVersion: '2026-07-29.dahlia'
-    });
-  }
-
-  async createCharge(createPaymentDto: CreatePaymentDto): Promise<Stripe.PaymentIntent> {
-    //just for testing purposes, in a real application we recieve the paymentmethodID from front-end.
-    const paymentMethod = await this.stripe.paymentMethods.create(
+    this.stripe = new Stripe(
+      this.configService.getOrThrow<string>('STRIPE_SECRET_KEY'),
       {
-        type: 'card',
-        card: { token: 'tok_visa' },
+        apiVersion: '2026-07-29.dahlia',
       },
     );
+  }
+
+  async createCharge(
+    createPaymentDto: CreatePaymentDto,
+  ): Promise<Stripe.PaymentIntent> {
+    //just for testing purposes, in a real application we recieve the paymentmethodID from front-end.
+    const paymentMethod = await this.stripe.paymentMethods.create({
+      type: 'card',
+      card: { token: 'tok_visa' },
+    });
 
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount: createPaymentDto.amount * 100,
@@ -41,10 +43,6 @@ export class PaymentsService {
       message: `Your payment of ${paymentIntent.amount / 100} USD has been processed.`,
     });
 
-
     return paymentIntent;
   }
-
-
-
 }

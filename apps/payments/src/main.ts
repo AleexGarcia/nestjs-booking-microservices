@@ -4,7 +4,6 @@ import { Transport } from '@nestjs/microservices';
 import { PaymentsModule } from './payments.module';
 
 async function bootstrap() {
-  
   const app = await NestFactory.create(PaymentsModule);
   const configService = app.get(ConfigService);
 
@@ -17,6 +16,8 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
-
 }
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('Bootstrap failed:', error);
+  process.exit(1);
+});

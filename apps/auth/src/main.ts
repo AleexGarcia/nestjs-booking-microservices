@@ -9,18 +9,20 @@ async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
   const configService = app.get(ConfigService);
 
-  app.connectMicroservice({ transport: 
-    Transport.TCP,
+  app.connectMicroservice({
+    transport: Transport.TCP,
     options: {
       host: '0.0.0.0',
-      port: configService.getOrThrow('TCP_PORT') 
-    }
-   })
+      port: configService.getOrThrow<number>('TCP_PORT'),
+    },
+  });
   app.use(cookieParser.default());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   await app.startAllMicroservices();
   await app.listen(configService.getOrThrow('HTTP_PORT'));
-
 }
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('Bootstrap failed:', error);
+  process.exit(1);
+});

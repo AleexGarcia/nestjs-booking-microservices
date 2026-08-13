@@ -11,17 +11,17 @@ export class NotificationsService {
         type: 'OAuth2',
         user: this.configService.get<string>('SMTP_USER'),
         clientId: this.configService.get<string>('GOOGLE_OAUTH_CLIENT_ID'),
-        clientSecret: this.configService.get<string>('GOOGLE_OAUTH_CLIENT_SECRET'),
-        refreshToken: this.configService.get<string>('GOOGLE_OAUTH_REFRESH_TOKEN'),
-      }
+        clientSecret: this.configService.get<string>(
+          'GOOGLE_OAUTH_CLIENT_SECRET',
+        ),
+        refreshToken: this.configService.get<string>(
+          'GOOGLE_OAUTH_REFRESH_TOKEN',
+        ),
+      },
     });
-
   }
 
-
-
   async sendNotification(email: string, message: string): Promise<void> {
-
     await this.transporter.sendMail({
       from: this.configService.get<string>('SMTP_USER'),
       to: email,

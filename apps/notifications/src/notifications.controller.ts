@@ -1,4 +1,4 @@
-import { Controller, Get, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, UsePipes, ValidationPipe } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { NotifyEmailDto } from './dto/notify-email.dto';
@@ -9,7 +9,9 @@ export class NotificationsController {
 
   @UsePipes(new ValidationPipe())
   @MessagePattern('sendNotification')
-  async sendNotification(@Payload() notifyEmailDto: NotifyEmailDto): Promise<void> {
+  async sendNotification(
+    @Payload() notifyEmailDto: NotifyEmailDto,
+  ): Promise<void> {
     const { email, message } = notifyEmailDto;
     await this.notificationsService.sendNotification(email, message);
   }

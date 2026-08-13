@@ -1,1 +1,1 @@
-export * from './jwt-auth.guards'
+export * from './jwt-auth.guards';

@@ -7,15 +7,15 @@ import { CurrentUser } from '@app/common';
 
 @Controller('users')
 export class UsersController {
-    constructor(private readonly usersService: UsersService){}
+  constructor(private readonly usersService: UsersService) {}
 
-    @Post()
-    async createUser(@Body() createUserDto: CreateUserDto){
-        return this.usersService.createUser(createUserDto);
-    }
-    @Get()
-    @UseGuards(JwtAuthGuard)
-    async getUser(@CurrentUser() user: UsersDocument){
-        return user;
-    }
+  @Post()
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.createUser(createUserDto);
+  }
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  getUser(@CurrentUser() user: UsersDocument) {
+    return user;
+  }
 }

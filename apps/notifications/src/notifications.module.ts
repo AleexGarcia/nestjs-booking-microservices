@@ -5,7 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
 
 @Module({
-  imports: [ConfigModule.forRoot({
+  imports: [
+    ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
         TCP_PORT: Joi.number().required(),
@@ -13,7 +14,8 @@ import Joi from 'joi';
         GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),
         GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().required(),
         GOOGLE_OAUTH_REFRESH_TOKEN: Joi.string().required(),
-      }),envFilePath: '/apps/notifications/.env'
+      }),
+      envFilePath: '/apps/notifications/.env',
     }),
   ],
   controllers: [NotificationsController],

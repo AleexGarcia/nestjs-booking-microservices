@@ -9,12 +9,13 @@ async function bootstrap() {
   app.connectMicroservice({
     transport: Transport.TCP,
     options: {
-      port: configService.get('TCP_PORT'),
-      host: '0.0.0.0'
+      port: configService.get<number>('TCP_PORT'),
+      host: '0.0.0.0',
     },
   });
-  
-  await app.startAllMicroservices();
 
+  await app.startAllMicroservices();
 }
-bootstrap();
+bootstrap().catch((error) =>
+  console.error('Error starting microservice', error),
+);

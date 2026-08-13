@@ -15,14 +15,14 @@ export class AuthController {
   @Post('login')
   async login(
     @CurrentUser() user: UsersDocument,
-    @Res({passthrough: true}) response: Response
-  ){
+    @Res({ passthrough: true }) response: Response,
+  ) {
     await this.authService.login(user, response);
     response.send(user);
   }
   @UseGuards(JwtAuthGuard)
   @MessagePattern('authenticate')
-  async authenticate(@CurrentUser() user: UsersDocument){
+  authenticate(@CurrentUser() user: UsersDocument) {
     return user;
   }
 }
