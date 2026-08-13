@@ -23,6 +23,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @MessagePattern('authenticate')
   authenticate(@CurrentUser() user: UsersDocument) {
-    return user;
+    return { _id: user._id, email: user.email };
   }
 }
